@@ -1,8 +1,8 @@
 package handler
 
 import (
-	"github.com/mailgun/holster/v3/syncutils"
-	"github.com/tommy-42/f1-go-telemetry/models"
+	"github.com/Tommy-42/f1-2020-go-telemetry/models"
+	"github.com/mailgun/holster/v3/syncutil"
 )
 
 // HandlerPacket ...
@@ -25,7 +25,7 @@ func (h *HandlerPacket) HandlerChan() chan []byte {
 // Run ...
 func (h *HandlerPacket) Run() {
 
-	fanOut := syncutils.NewFanOut(100)
+	fanOut := syncutil.NewFanOut(100)
 	for packet := range h.handlerChan {
 		fanOut.Run(func(cast interface{}) error {
 			// find

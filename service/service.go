@@ -3,8 +3,8 @@ package service
 import (
 	"net"
 
+	"github.com/Tommy-42/f1-2020-go-telemetry/handler"
 	"github.com/sirupsen/logrus"
-	"github.com/tommy-42/f1-go-telemetry/handler"
 )
 
 // Service ...
