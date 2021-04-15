@@ -1,4 +1,8 @@
-package udppacket
+package packet
+
+import (
+	"encoding/json"
+)
 
 // MarshalZone contains masharl zone data
 type MarshalZone struct {
@@ -67,4 +71,11 @@ type PacketSessionData struct {
 	NetworkGame               uint8                     // 0 = offline, 1 = online
 	NumWeatherForecastSamples uint8                     // Number of weather samples to follow
 	WeatherForecastSamples    [20]WeatherForecastSample // Array of weather forecast samples
+}
+
+func (p *PacketSessionData) Read(receiver []byte) (n int, err error) {
+	data, err := json.Marshal(p)
+	copy(receiver, data)
+	n = len(data)
+	return
 }

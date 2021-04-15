@@ -1,4 +1,4 @@
-package udppacket
+package packet
 
 /*
 Packet IDs
@@ -35,3 +35,19 @@ type PacketHeader struct {
 	SecondaryPlayerCarIndex uint8 // Index of secondary player's car in the array (splitscreen)
 	// 255 if no second player
 }
+
+type PacketType uint8
+
+const (
+	MotionPacket  PacketType = 0
+	SessionPacket            = iota
+	LapDataPacket
+	EventPacket
+	ParticipantsPacket
+	CarSetupsPacket
+	CarTelemetryPacket
+	CarStatusPacket
+	FinalClassificationPacket
+	LobbyInfoPacket
+	UnkownPacket PacketType = 255
+)

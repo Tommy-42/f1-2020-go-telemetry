@@ -1,4 +1,8 @@
-package udppacket
+package packet
+
+import (
+	"encoding/json"
+)
 
 // CarSetupData ...
 type CarSetupData struct {
@@ -36,4 +40,11 @@ type PacketCarSetupData struct {
 	Header PacketHeader // Header
 
 	CarSetups [22]CarSetupData
+}
+
+func (p *PacketCarSetupData) Read(receiver []byte) (n int, err error) {
+	data, err := json.Marshal(p)
+	copy(receiver, data)
+	n = len(data)
+	return
 }

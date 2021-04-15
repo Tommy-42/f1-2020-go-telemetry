@@ -1,4 +1,8 @@
-package udppacket
+package packet
+
+import (
+	"encoding/json"
+)
 
 // FinalClassificationData ...
 type FinalClassificationData struct {
@@ -33,4 +37,11 @@ type PacketFinalClassificationData struct {
 
 	NumCars            uint8 // Number of cars in the final classification
 	ClassificationData [22]FinalClassificationData
+}
+
+func (p *PacketFinalClassificationData) Read(receiver []byte) (n int, err error) {
+	data, err := json.Marshal(p)
+	copy(receiver, data)
+	n = len(data)
+	return
 }

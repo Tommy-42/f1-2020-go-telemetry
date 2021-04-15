@@ -1,4 +1,8 @@
-package udppacket
+package packet
+
+import (
+	"encoding/json"
+)
 
 // CarTelemetryData ...
 type CarTelemetryData struct {
@@ -45,4 +49,11 @@ type PacketCarTelemetryData struct {
 	// Suggested gear for the player (1-8)
 	// 0 if no gear suggested
 	SuggestedGear int8
+}
+
+func (p *PacketCarTelemetryData) Read(receiver []byte) (n int, err error) {
+	data, err := json.Marshal(p)
+	copy(receiver, data)
+	n = len(data)
+	return
 }

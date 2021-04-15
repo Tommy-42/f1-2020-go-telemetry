@@ -1,4 +1,8 @@
-package udppacket
+package packet
+
+import (
+	"encoding/json"
+)
 
 // EventDataDetails the event details packet is different for each type of event.
 // Make sure only the correct type is interpreted.
@@ -39,7 +43,7 @@ type Penalty struct {
 // SpeedTrap ...
 type SpeedTrap struct {
 	VehicleIdx uint8   // Vehicle index of the vehicle triggering speed trap
-	speed      float64 // Top speed achieved in kilometres per hour
+	Speed      float64 // Top speed achieved in kilometres per hour
 }
 
 // PacketEventData gives details of events that happen during the course of a session.
@@ -70,4 +74,11 @@ type PacketEventData struct {
 
 	// EventDetails - should be interpreted differently for each type
 	EventDetails EventDataDetails
+}
+
+func (p *PacketEventData) Read(receiver []byte) (n int, err error) {
+	data, err := json.Marshal(p)
+	copy(receiver, data)
+	n = len(data)
+	return
 }

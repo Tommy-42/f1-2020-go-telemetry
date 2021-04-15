@@ -1,4 +1,8 @@
-package udppacket
+package packet
+
+import (
+	"encoding/json"
+)
 
 // LapData the lap data packet gives details of all the cars in the session.
 type LapData struct {
@@ -48,4 +52,11 @@ type PacketLapData struct {
 	Header PacketHeader // Header
 
 	LapData [22]LapData // Lap data for all cars on track
+}
+
+func (p *PacketLapData) Read(receiver []byte) (n int, err error) {
+	data, err := json.Marshal(p)
+	copy(receiver, data)
+	n = len(data)
+	return
 }

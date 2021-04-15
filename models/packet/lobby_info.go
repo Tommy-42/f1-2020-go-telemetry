@@ -1,4 +1,8 @@
-package udppacket
+package packet
+
+import (
+	"encoding/json"
+)
 
 // LobbyInfoData ...
 type LobbyInfoData struct {
@@ -22,4 +26,11 @@ type PacketLobbyInfoData struct {
 	// Packet specific data
 	NumPlayers   uint8 // Number of players in the lobby data
 	LobbyPlayers [22]LobbyInfoData
+}
+
+func (p *PacketLobbyInfoData) Read(receiver []byte) (n int, err error) {
+	data, err := json.Marshal(p)
+	copy(receiver, data)
+	n = len(data)
+	return
 }

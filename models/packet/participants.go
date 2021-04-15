@@ -1,4 +1,8 @@
-package udppacket
+package packet
+
+import (
+	"encoding/json"
+)
 
 // ParticipantData ...
 type ParticipantData struct {
@@ -28,4 +32,11 @@ type PacketParticipantsData struct {
 	NumActiveCars uint8 // Number of active cars in the data – should match number of
 	// cars on HUD
 	Participants [22]ParticipantData
+}
+
+func (p *PacketParticipantsData) Read(receiver []byte) (n int, err error) {
+	data, err := json.Marshal(p)
+	copy(receiver, data)
+	n = len(data)
+	return
 }
