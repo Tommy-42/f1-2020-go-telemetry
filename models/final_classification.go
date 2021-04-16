@@ -17,15 +17,11 @@ type FinalClassificationData struct {
 	ClassificationData packet.FinalClassificationData
 }
 
-func NewFinalClassificationData(p *packet.PacketFinalClassificationData) *FinalClassificationData {
-	if p.Header.PlayerCarIndex > 21 {
-		return nil
-	}
-
+func NewFinalClassificationData(header packet.PacketHeader, p *packet.PacketFinalClassificationData) *FinalClassificationData {
 	return &FinalClassificationData{
-		Header:             NewHeader(p.Header),
+		Header:             NewHeader(header),
 		NumCars:            p.NumCars,
-		ClassificationData: p.ClassificationData[p.Header.PlayerCarIndex],
+		ClassificationData: p.ClassificationData[header.PlayerCarIndex],
 	}
 }
 

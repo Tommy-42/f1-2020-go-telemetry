@@ -14,14 +14,10 @@ type LapData struct {
 	LapData packet.LapData // Lap data for all cars on track
 }
 
-func NewLapData(p *packet.PacketLapData) *LapData {
-	if p.Header.PlayerCarIndex > 21 {
-		return nil
-	}
-
+func NewLapData(header packet.PacketHeader, p *packet.PacketLapData) *LapData {
 	return &LapData{
-		Header:  NewHeader(p.Header),
-		LapData: p.LapData[p.Header.PlayerCarIndex],
+		Header:  NewHeader(header),
+		LapData: p.LapData[header.PlayerCarIndex],
 	}
 }
 

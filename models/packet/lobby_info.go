@@ -1,9 +1,5 @@
 package packet
 
-import (
-	"encoding/json"
-)
-
 // LobbyInfoData ...
 type LobbyInfoData struct {
 	AIControlled uint8 // Whether the vehicle is AI (1) or Human (0) controlled
@@ -21,16 +17,7 @@ type LobbyInfoData struct {
 // Size: 1169 bytes (Packet size updated in Beta 3)
 // Version: 1
 type PacketLobbyInfoData struct {
-	Header PacketHeader // Header
-
 	// Packet specific data
 	NumPlayers   uint8 // Number of players in the lobby data
 	LobbyPlayers [22]LobbyInfoData
-}
-
-func (p *PacketLobbyInfoData) Read(receiver []byte) (n int, err error) {
-	data, err := json.Marshal(p)
-	copy(receiver, data)
-	n = len(data)
-	return
 }

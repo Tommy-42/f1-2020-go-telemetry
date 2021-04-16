@@ -1,9 +1,5 @@
 package packet
 
-import (
-	"encoding/json"
-)
-
 // MarshalZone contains masharl zone data
 type MarshalZone struct {
 	ZoneStart float64 // Fraction (0..1) of way through the lap the marshal zone starts
@@ -33,8 +29,6 @@ type WeatherForecastSample struct {
 // Size: 251 bytes (Packet size updated in Beta 3)
 // Version: 1
 type PacketSessionData struct {
-	Header PacketHeader // Header
-
 	// Weather - 0 = clear, 1 = light cloud, 2 = overcast
 	// 3 = light rain, 4 = heavy rain, 5 = storm
 	Weather uint8
@@ -71,11 +65,4 @@ type PacketSessionData struct {
 	NetworkGame               uint8                     // 0 = offline, 1 = online
 	NumWeatherForecastSamples uint8                     // Number of weather samples to follow
 	WeatherForecastSamples    [20]WeatherForecastSample // Array of weather forecast samples
-}
-
-func (p *PacketSessionData) Read(receiver []byte) (n int, err error) {
-	data, err := json.Marshal(p)
-	copy(receiver, data)
-	n = len(data)
-	return
 }

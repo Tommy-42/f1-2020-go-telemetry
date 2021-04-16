@@ -1,9 +1,5 @@
 package packet
 
-import (
-	"encoding/json"
-)
-
 // CarTelemetryData ...
 type CarTelemetryData struct {
 	Speed                   uint16     // Speed of car in kilometres per hour
@@ -30,8 +26,6 @@ type CarTelemetryData struct {
 // Size: 1307 bytes (Packet size updated in Beta 3)
 // Version: 1
 type PacketCarTelemetryData struct {
-	Header PacketHeader // Header
-
 	CarTelemetryData [22]CarTelemetryData
 
 	// Bit flags specifying which buttons are being pressed
@@ -49,11 +43,4 @@ type PacketCarTelemetryData struct {
 	// Suggested gear for the player (1-8)
 	// 0 if no gear suggested
 	SuggestedGear int8
-}
-
-func (p *PacketCarTelemetryData) Read(receiver []byte) (n int, err error) {
-	data, err := json.Marshal(p)
-	copy(receiver, data)
-	n = len(data)
-	return
 }

@@ -1,9 +1,5 @@
 package packet
 
-import (
-	"encoding/json"
-)
-
 // ParticipantData ...
 type ParticipantData struct {
 	AiControlled  uint8  // Whether the vehicle is AI (1) or Human (0) controlled
@@ -27,16 +23,6 @@ type ParticipantData struct {
 // Size: 1213 bytes (Packet size updated in Beta 3)
 // Version: 1
 type PacketParticipantsData struct {
-	Header PacketHeader // Header
-
-	NumActiveCars uint8 // Number of active cars in the data – should match number of
-	// cars on HUD
-	Participants [22]ParticipantData
-}
-
-func (p *PacketParticipantsData) Read(receiver []byte) (n int, err error) {
-	data, err := json.Marshal(p)
-	copy(receiver, data)
-	n = len(data)
-	return
+	NumActiveCars uint8               // Number of active cars in the data – should match number of
+	Participants  [22]ParticipantData // cars on HUD
 }

@@ -1,9 +1,5 @@
 package packet
 
-import (
-	"encoding/json"
-)
-
 // FinalClassificationData ...
 type FinalClassificationData struct {
 	Position     uint8 // Finishing position
@@ -33,15 +29,6 @@ type FinalClassificationData struct {
 // Size: 839 bytes (Packet size updated in Beta 3)
 // Version: 1
 type PacketFinalClassificationData struct {
-	Header PacketHeader // Header
-
 	NumCars            uint8 // Number of cars in the final classification
 	ClassificationData [22]FinalClassificationData
-}
-
-func (p *PacketFinalClassificationData) Read(receiver []byte) (n int, err error) {
-	data, err := json.Marshal(p)
-	copy(receiver, data)
-	n = len(data)
-	return
 }

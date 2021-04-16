@@ -33,9 +33,9 @@ type EventData struct {
 	EventDetails packet.EventDataDetails
 }
 
-func NewEventData(p *packet.PacketEventData) *EventData {
+func NewEventData(header packet.PacketHeader, p *packet.PacketEventData) *EventData {
 	return &EventData{
-		Header:          NewHeader(p.Header),
+		Header:          NewHeader(header),
 		EventStringCode: p.EventStringCode,
 		EventDetails:    p.EventDetails,
 	}

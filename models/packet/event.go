@@ -1,9 +1,5 @@
 package packet
 
-import (
-	"encoding/json"
-)
-
 // EventDataDetails the event details packet is different for each type of event.
 // Make sure only the correct type is interpreted.
 type EventDataDetails interface{}
@@ -52,8 +48,6 @@ type SpeedTrap struct {
 // Size: 35 bytes (Packet size updated in Beta 3)
 // Version: 1
 type PacketEventData struct {
-	Header PacketHeader // Header
-
 	/*
 		EventStringCodes
 
@@ -74,11 +68,4 @@ type PacketEventData struct {
 
 	// EventDetails - should be interpreted differently for each type
 	EventDetails EventDataDetails
-}
-
-func (p *PacketEventData) Read(receiver []byte) (n int, err error) {
-	data, err := json.Marshal(p)
-	copy(receiver, data)
-	n = len(data)
-	return
 }

@@ -15,14 +15,10 @@ type CarSetupData struct {
 	CarSetups packet.CarSetupData
 }
 
-func NewCarSetupData(p *packet.PacketCarSetupData) *CarSetupData {
-
-	if p.Header.PlayerCarIndex > 21 {
-		return nil
-	}
+func NewCarSetupData(header packet.PacketHeader, p *packet.PacketCarSetupData) *CarSetupData {
 	return &CarSetupData{
-		Header:    NewHeader(p.Header),
-		CarSetups: p.CarSetups[p.Header.PlayerCarIndex],
+		Header:    NewHeader(header),
+		CarSetups: p.CarSetups[header.PlayerCarIndex],
 	}
 }
 

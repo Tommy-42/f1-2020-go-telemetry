@@ -1,9 +1,5 @@
 package packet
 
-import (
-	"encoding/json"
-)
-
 // CarSetupData ...
 type CarSetupData struct {
 	FrontWing              uint8   // Front wing aero
@@ -37,14 +33,5 @@ type CarSetupData struct {
 // Size: 1102 bytes (Packet size updated in Beta 3)
 // Version: 1
 type PacketCarSetupData struct {
-	Header PacketHeader // Header
-
 	CarSetups [22]CarSetupData
-}
-
-func (p *PacketCarSetupData) Read(receiver []byte) (n int, err error) {
-	data, err := json.Marshal(p)
-	copy(receiver, data)
-	n = len(data)
-	return
 }

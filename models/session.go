@@ -49,13 +49,9 @@ type SessionData struct {
 	WeatherForecastSamples    packet.WeatherForecastSample // Array of weather forecast samples
 }
 
-func NewSessionData(p *packet.PacketSessionData) *SessionData {
-	if p.Header.PlayerCarIndex > 21 {
-		return nil
-	}
-
+func NewSessionData(header packet.PacketHeader, p *packet.PacketSessionData) *SessionData {
 	return &SessionData{
-		Header:                    NewHeader(p.Header),
+		Header:                    NewHeader(header),
 		Weather:                   p.Weather,
 		TrackTemperature:          p.TrackTemperature,
 		AirTemperature:            p.AirTemperature,
@@ -76,7 +72,7 @@ func NewSessionData(p *packet.PacketSessionData) *SessionData {
 		SafetyCarStatus:           p.SafetyCarStatus,
 		NetworkGame:               p.NetworkGame,
 		NumWeatherForecastSamples: p.NumWeatherForecastSamples,
-		WeatherForecastSamples:    p.WeatherForecastSamples[p.Header.PlayerCarIndex],
+		WeatherForecastSamples:    p.WeatherForecastSamples[header.PlayerCarIndex],
 	}
 }
 

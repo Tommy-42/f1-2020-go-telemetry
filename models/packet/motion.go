@@ -1,9 +1,5 @@
 package packet
 
-import (
-	"encoding/json"
-)
-
 // CarMotionData data for the car being driven
 type CarMotionData struct {
 	WorldPositionX     float64 // World space X position
@@ -37,8 +33,6 @@ type CarMotionData struct {
 // Size: 1464 bytes (Packet size updated in Beta 3)
 // Version: 1
 type PacketMotionData struct {
-	Header PacketHeader // Header
-
 	CarMotionData [22]CarMotionData // Data for all cars on track
 
 	// Extra player car ONLY data
@@ -57,11 +51,4 @@ type PacketMotionData struct {
 	AngularAccelerationY   float64    // Angular velocity y-component
 	AngularAccelerationZ   float64    // Angular velocity z-component
 	FrontWheelsAngle       float64    // Current front wheels angle in radians
-}
-
-func (p *PacketMotionData) Read(receiver []byte) (n int, err error) {
-	data, err := json.Marshal(p)
-	copy(receiver, data)
-	n = len(data)
-	return
 }

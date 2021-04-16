@@ -16,15 +16,11 @@ type LobbyInfoData struct {
 	LobbyPlayers packet.LobbyInfoData
 }
 
-func NewLobbyInfoData(p *packet.PacketLobbyInfoData) *LobbyInfoData {
-	if p.Header.PlayerCarIndex > 21 {
-		return nil
-	}
-
+func NewLobbyInfoData(header packet.PacketHeader, p *packet.PacketLobbyInfoData) *LobbyInfoData {
 	return &LobbyInfoData{
-		Header:       NewHeader(p.Header),
+		Header:       NewHeader(header),
 		NumPlayers:   p.NumPlayers,
-		LobbyPlayers: p.LobbyPlayers[p.Header.PlayerCarIndex],
+		LobbyPlayers: p.LobbyPlayers[header.PlayerCarIndex],
 	}
 }
 

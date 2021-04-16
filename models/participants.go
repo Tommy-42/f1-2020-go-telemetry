@@ -25,15 +25,11 @@ type ParticipantsData struct {
 	Participants  packet.ParticipantData
 }
 
-func NewParticipantsData(p *packet.PacketParticipantsData) *ParticipantsData {
-	if p.Header.PlayerCarIndex > 21 {
-		return nil
-	}
-
+func NewParticipantsData(header packet.PacketHeader, p *packet.PacketParticipantsData) *ParticipantsData {
 	return &ParticipantsData{
-		Header:        NewHeader(p.Header),
+		Header:        NewHeader(header),
 		NumActiveCars: p.NumActiveCars,
-		Participants:  p.Participants[p.Header.PlayerCarIndex],
+		Participants:  p.Participants[header.PlayerCarIndex],
 	}
 }
 
