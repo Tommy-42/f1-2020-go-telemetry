@@ -27,15 +27,15 @@ type EventData struct {
 		Penalty Issued 			| “PENA” 	| A penalty has been issued – details in event
 		Speed Trap Triggered 	| “SPTP” 	| Speed trap has been triggered by fastest speed
 	*/
-	EventStringCode [4]uint8
+	EventStringCode string
 
 	// EventDetails - should be interpreted differently for each type
 	EventDetails packet.EventDataDetails
 }
 
-func NewEventData(header packet.PacketHeader, p *packet.PacketEventData) *EventData {
+func NewEventData(p *packet.PacketEventData) *EventData {
 	return &EventData{
-		Header:          NewHeader(header),
+		Header:          NewHeader(p.Header),
 		EventStringCode: p.EventStringCode,
 		EventDetails:    p.EventDetails,
 	}

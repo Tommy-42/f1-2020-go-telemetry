@@ -53,7 +53,6 @@ func (s *Service) Start(ctx context.Context) error {
 	defer connection.Close()
 
 	buffer := make([]byte, 2048)
-
 	for {
 		if err := ctx.Err(); err != nil {
 			logrus.WithError(err).Errorf("context cancelled")

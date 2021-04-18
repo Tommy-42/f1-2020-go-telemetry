@@ -17,6 +17,7 @@ type LobbyInfoData struct {
 // Size: 1169 bytes (Packet size updated in Beta 3)
 // Version: 1
 type PacketLobbyInfoData struct {
+	Header PacketHeader
 	// Packet specific data
 	NumPlayers   uint8 // Number of players in the lobby data
 	LobbyPlayers [22]LobbyInfoData

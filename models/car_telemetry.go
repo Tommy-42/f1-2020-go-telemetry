@@ -9,9 +9,9 @@ import (
 
 type CarTelemetryDataDetails struct {
 	Speed            uint16  // Speed of car in kilometres per hour
-	Throttle         float64 // Amount of throttle applied (0.0 to 1.0)
-	Steer            float64 // Steering (-1.0 (full lock left) to 1.0 (full lock right))
-	Brake            float64 // Amount of brake applied (0.0 to 1.0)
+	Throttle         float32 // Amount of throttle applied (0.0 to 1.0)
+	Steer            float32 // Steering (-1.0 (full lock left) to 1.0 (full lock right))
+	Brake            float32 // Amount of brake applied (0.0 to 1.0)
 	Clutch           uint8   // Amount of clutch applied (0 to 100)
 	Gear             int8    // Gear selected (1-8, N=0, R=-1)
 	EngineRPM        uint16  // Engine RPM
@@ -35,10 +35,10 @@ type CarTelemetryDataDetails struct {
 
 	EngineTemperature uint16 // Engine temperature (celsius)
 
-	RearLeftTyresPressure   float64 // Tyres pressure (PSI)
-	RearRightTyresPressure  float64 // Tyres pressure (PSI)
-	FrontLeftTyresPressure  float64 // Tyres pressure (PSI)
-	FrontRightTyresPressure float64 // Tyres pressure (PSI)
+	RearLeftTyresPressure   float32 // Tyres pressure (PSI)
+	RearRightTyresPressure  float32 // Tyres pressure (PSI)
+	FrontLeftTyresPressure  float32 // Tyres pressure (PSI)
+	FrontRightTyresPressure float32 // Tyres pressure (PSI)
 
 	RearLeftSurfaceType   uint8 // Driving surface, see appendices
 	RearRightSurfaceType  uint8 // Driving surface, see appendices
@@ -70,10 +70,10 @@ type CarTelemetryData struct {
 	SuggestedGear int8
 }
 
-func NewCarTelemetryData(header packet.PacketHeader, p *packet.PacketCarTelemetryData) *CarTelemetryData {
-	pk := p.CarTelemetryData[header.PlayerCarIndex]
+func NewCarTelemetryData(p *packet.PacketCarTelemetryData) *CarTelemetryData {
+	pk := p.CarTelemetryData[p.Header.PlayerCarIndex]
 	return &CarTelemetryData{
-		Header: NewHeader(header),
+		Header: NewHeader(p.Header),
 		CarTelemetryData: CarTelemetryDataDetails{
 			Speed:                             pk.Speed,
 			Throttle:                          pk.Throttle,

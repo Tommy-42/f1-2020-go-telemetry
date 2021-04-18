@@ -25,11 +25,11 @@ type ParticipantsData struct {
 	Participants  packet.ParticipantData
 }
 
-func NewParticipantsData(header packet.PacketHeader, p *packet.PacketParticipantsData) *ParticipantsData {
+func NewParticipantsData(p *packet.PacketParticipantsData) *ParticipantsData {
 	return &ParticipantsData{
-		Header:        NewHeader(header),
+		Header:        NewHeader(p.Header),
 		NumActiveCars: p.NumActiveCars,
-		Participants:  p.Participants[header.PlayerCarIndex],
+		Participants:  p.Participants[p.Header.PlayerCarIndex],
 	}
 }
 

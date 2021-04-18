@@ -12,8 +12,8 @@ type FinalClassificationData struct {
 	// 3 = finished, 4 = disqualified, 5 = not classified
 	// 6 = retired
 	ResultStatus     uint8
-	BestLapTime      float64  // Best lap time of the session in seconds
-	TotalRaceTime    float64  // Total race time in seconds without penalties
+	BestLapTime      float32  // Best lap time of the session in seconds
+	TotalRaceTime    float32  // Total race time in seconds without penalties
 	PenaltiesTime    uint8    // Total penalties accumulated in seconds
 	NumPenalties     uint8    // Number of penalties applied to this driver
 	NumTyreStints    uint8    // Number of tyres stints up to maximum
@@ -29,6 +29,7 @@ type FinalClassificationData struct {
 // Size: 839 bytes (Packet size updated in Beta 3)
 // Version: 1
 type PacketFinalClassificationData struct {
+	Header             PacketHeader
 	NumCars            uint8 // Number of cars in the final classification
 	ClassificationData [22]FinalClassificationData
 }

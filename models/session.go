@@ -49,9 +49,9 @@ type SessionData struct {
 	WeatherForecastSamples    packet.WeatherForecastSample // Array of weather forecast samples
 }
 
-func NewSessionData(header packet.PacketHeader, p *packet.PacketSessionData) *SessionData {
+func NewSessionData(p *packet.PacketSessionData) *SessionData {
 	return &SessionData{
-		Header:                    NewHeader(header),
+		Header:                    NewHeader(p.Header),
 		Weather:                   p.Weather,
 		TrackTemperature:          p.TrackTemperature,
 		AirTemperature:            p.AirTemperature,
@@ -72,7 +72,7 @@ func NewSessionData(header packet.PacketHeader, p *packet.PacketSessionData) *Se
 		SafetyCarStatus:           p.SafetyCarStatus,
 		NetworkGame:               p.NetworkGame,
 		NumWeatherForecastSamples: p.NumWeatherForecastSamples,
-		WeatherForecastSamples:    p.WeatherForecastSamples[header.PlayerCarIndex],
+		WeatherForecastSamples:    p.WeatherForecastSamples[0],
 	}
 }
 

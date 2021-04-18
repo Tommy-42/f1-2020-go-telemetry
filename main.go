@@ -1,4 +1,4 @@
-package ___main
+package main
 
 import (
 	"context"
@@ -10,6 +10,7 @@ import (
 
 func main() {
 	logrus.SetFormatter(&logrus.JSONFormatter{})
+	logrus.SetLevel(logrus.InfoLevel)
 
 	svc := service.NewService()
 

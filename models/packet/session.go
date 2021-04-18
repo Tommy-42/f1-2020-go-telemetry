@@ -2,7 +2,7 @@ package packet
 
 // MarshalZone contains masharl zone data
 type MarshalZone struct {
-	ZoneStart float64 // Fraction (0..1) of way through the lap the marshal zone starts
+	ZoneStart float32 // Fraction (0..1) of way through the lap the marshal zone starts
 	ZoneFlag  int8    // -1 = invalid/unknown, 0 = none, 1 = green, 2 = blue, 3 = yellow, 4 = red
 }
 
@@ -29,6 +29,7 @@ type WeatherForecastSample struct {
 // Size: 251 bytes (Packet size updated in Beta 3)
 // Version: 1
 type PacketSessionData struct {
+	Header PacketHeader
 	// Weather - 0 = clear, 1 = light cloud, 2 = overcast
 	// 3 = light rain, 4 = heavy rain, 5 = storm
 	Weather uint8

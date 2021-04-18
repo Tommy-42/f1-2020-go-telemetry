@@ -23,6 +23,7 @@ type ParticipantData struct {
 // Size: 1213 bytes (Packet size updated in Beta 3)
 // Version: 1
 type PacketParticipantsData struct {
+	Header        PacketHeader
 	NumActiveCars uint8               // Number of active cars in the data – should match number of
 	Participants  [22]ParticipantData // cars on HUD
 }

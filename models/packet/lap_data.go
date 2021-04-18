@@ -2,13 +2,13 @@ package packet
 
 // LapData the lap data packet gives details of all the cars in the session.
 type LapData struct {
-	LastLapTime    float64 // Last lap time in seconds
-	CurrentLapTime float64 // Current time around the lap in seconds
+	LastLapTime    float32 // Last lap time in seconds
+	CurrentLapTime float32 // Current time around the lap in seconds
 
 	//UPDATED in Beta 3:
 	Sector1TimeInMS            uint16  // Sector 1 time in milliseconds
 	Sector2TimeInMS            uint16  // Sector 2 time in milliseconds
-	BestLapTime                float64 // Best lap time of the session in seconds
+	BestLapTime                float32 // Best lap time of the session in seconds
 	BestLapNum                 uint8   // Lap number best time achieved on
 	BestLapSector1TimeInMS     uint16  // Sector 1 time of best lap in the session in milliseconds
 	BestLapSector2TimeInMS     uint16  // Sector 2 time of best lap in the session in milliseconds
@@ -20,11 +20,11 @@ type LapData struct {
 	BestOverallSector3TimeInMS uint16  // Best overall sector 3 time of the session in milliseconds
 	BestOverallSector3LapNum   uint8   // Lap number best overall sector 3 time achieved on
 
-	LapDistance float64 // Distance vehicle is around current lap in metres – could
+	LapDistance float32 // Distance vehicle is around current lap in metres – could
 	// be negative if line hasn’t been crossed yet
-	TotalDistance float64 // Total distance travelled in session in metres – could
+	TotalDistance float32 // Total distance travelled in session in metres – could
 	// be negative if line hasn’t been crossed yet
-	SafetyCarDelta    float64 // Delta in seconds for safety car
+	SafetyCarDelta    float32 // Delta in seconds for safety car
 	CarPosition       uint8   // Car race position
 	CurrentLapNum     uint8   // Current lap number
 	PitStatus         uint8   // 0 = none, 1 = pitting, 2 = in pit area
@@ -45,5 +45,6 @@ type LapData struct {
 // Size: 1190 bytes (Struct updated in Beta 3)
 // Version: 1
 type PacketLapData struct {
+	Header  PacketHeader
 	LapData [22]LapData // Lap data for all cars on track
 }

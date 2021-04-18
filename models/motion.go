@@ -19,42 +19,42 @@ type MotionData struct {
 	CarMotionData packet.CarMotionData // Data for all cars on track
 
 	// Extra player car ONLY data
-	RearLeftSuspensionPosition       float64 // Note: All wheel arrays have the following order:
-	RearRightSuspensionPosition      float64 // Note: All wheel arrays have the following order:
-	FrontLeftSuspensionPosition      float64 // Note: All wheel arrays have the following order:
-	FrontRightSuspensionPosition     float64 // Note: All wheel arrays have the following order:
-	RearLeftSuspensionVelocity       float64 // RL, RR, FL, FR
-	RearRightSuspensionVelocity      float64 // RL, RR, FL, FR
-	FrontLeftSuspensionVelocity      float64 // RL, RR, FL, FR
-	FrontRightSuspensionVelocity     float64 // RL, RR, FL, FR
-	RearLeftSuspensionAcceleration   float64 // RL, RR, FL, FR
-	RearRightSuspensionAcceleration  float64 // RL, RR, FL, FR
-	FrontLeftSuspensionAcceleration  float64 // RL, RR, FL, FR
-	FrontRightSuspensionAcceleration float64 // RL, RR, FL, FR
-	RearLeftWheelSpeed               float64 // Speed of each wheel
-	RearRightWheelSpeed              float64 // Speed of each wheel
-	FrontLeftWheelSpeed              float64 // Speed of each wheel
-	FrontRightWheelSpeed             float64 // Speed of each wheel
-	RearLeftWheelSlip                float64 // Slip ratio for each wheel
-	RearRightWheelSlip               float64 // Slip ratio for each wheel
-	FrontLeftWheelSlip               float64 // Slip ratio for each wheel
-	FrontRightWheelSlip              float64 // Slip ratio for each wheel
-	LocalVelocityX                   float64 // Velocity in local space
-	LocalVelocityY                   float64 // Velocity in local space
-	LocalVelocityZ                   float64 // Velocity in local space
-	AngularVelocityX                 float64 // Angular velocity x-component
-	AngularVelocityY                 float64 // Angular velocity y-component
-	AngularVelocityZ                 float64 // Angular velocity z-component
-	AngularAccelerationX             float64 // Angular velocity x-component
-	AngularAccelerationY             float64 // Angular velocity y-component
-	AngularAccelerationZ             float64 // Angular velocity z-component
-	FrontWheelsAngle                 float64 // Current front wheels angle in radians
+	RearLeftSuspensionPosition       float32 // Note: All wheel arrays have the following order:
+	RearRightSuspensionPosition      float32 // Note: All wheel arrays have the following order:
+	FrontLeftSuspensionPosition      float32 // Note: All wheel arrays have the following order:
+	FrontRightSuspensionPosition     float32 // Note: All wheel arrays have the following order:
+	RearLeftSuspensionVelocity       float32 // RL, RR, FL, FR
+	RearRightSuspensionVelocity      float32 // RL, RR, FL, FR
+	FrontLeftSuspensionVelocity      float32 // RL, RR, FL, FR
+	FrontRightSuspensionVelocity     float32 // RL, RR, FL, FR
+	RearLeftSuspensionAcceleration   float32 // RL, RR, FL, FR
+	RearRightSuspensionAcceleration  float32 // RL, RR, FL, FR
+	FrontLeftSuspensionAcceleration  float32 // RL, RR, FL, FR
+	FrontRightSuspensionAcceleration float32 // RL, RR, FL, FR
+	RearLeftWheelSpeed               float32 // Speed of each wheel
+	RearRightWheelSpeed              float32 // Speed of each wheel
+	FrontLeftWheelSpeed              float32 // Speed of each wheel
+	FrontRightWheelSpeed             float32 // Speed of each wheel
+	RearLeftWheelSlip                float32 // Slip ratio for each wheel
+	RearRightWheelSlip               float32 // Slip ratio for each wheel
+	FrontLeftWheelSlip               float32 // Slip ratio for each wheel
+	FrontRightWheelSlip              float32 // Slip ratio for each wheel
+	LocalVelocityX                   float32 // Velocity in local space
+	LocalVelocityY                   float32 // Velocity in local space
+	LocalVelocityZ                   float32 // Velocity in local space
+	AngularVelocityX                 float32 // Angular velocity x-component
+	AngularVelocityY                 float32 // Angular velocity y-component
+	AngularVelocityZ                 float32 // Angular velocity z-component
+	AngularAccelerationX             float32 // Angular velocity x-component
+	AngularAccelerationY             float32 // Angular velocity y-component
+	AngularAccelerationZ             float32 // Angular velocity z-component
+	FrontWheelsAngle                 float32 // Current front wheels angle in radians
 }
 
-func NewMotionData(header packet.PacketHeader, p *packet.PacketMotionData) *MotionData {
+func NewMotionData(p *packet.PacketMotionData) *MotionData {
 	return &MotionData{
-		Header:                           NewHeader(header),
-		CarMotionData:                    p.CarMotionData[header.PlayerCarIndex],
+		Header:                           NewHeader(p.Header),
+		CarMotionData:                    p.CarMotionData[p.Header.PlayerCarIndex],
 		RearLeftSuspensionPosition:       p.SuspensionPosition[0],
 		RearRightSuspensionPosition:      p.SuspensionPosition[1],
 		FrontLeftSuspensionPosition:      p.SuspensionPosition[2],

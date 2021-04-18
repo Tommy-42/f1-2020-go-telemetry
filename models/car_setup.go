@@ -15,10 +15,10 @@ type CarSetupData struct {
 	CarSetups packet.CarSetupData
 }
 
-func NewCarSetupData(header packet.PacketHeader, p *packet.PacketCarSetupData) *CarSetupData {
+func NewCarSetupData(p *packet.PacketCarSetupData) *CarSetupData {
 	return &CarSetupData{
-		Header:    NewHeader(header),
-		CarSetups: p.CarSetups[header.PlayerCarIndex],
+		Header:    NewHeader(p.Header),
+		CarSetups: p.CarSetups[p.Header.PlayerCarIndex],
 	}
 }
 

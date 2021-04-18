@@ -16,11 +16,11 @@ type LobbyInfoData struct {
 	LobbyPlayers packet.LobbyInfoData
 }
 
-func NewLobbyInfoData(header packet.PacketHeader, p *packet.PacketLobbyInfoData) *LobbyInfoData {
+func NewLobbyInfoData(p *packet.PacketLobbyInfoData) *LobbyInfoData {
 	return &LobbyInfoData{
-		Header:       NewHeader(header),
+		Header:       NewHeader(p.Header),
 		NumPlayers:   p.NumPlayers,
-		LobbyPlayers: p.LobbyPlayers[header.PlayerCarIndex],
+		LobbyPlayers: p.LobbyPlayers[p.Header.PlayerCarIndex],
 	}
 }
 

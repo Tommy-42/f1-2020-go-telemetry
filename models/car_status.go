@@ -14,9 +14,9 @@ type CarStatusDataDetail struct {
 	FuelMix           uint8   // Fuel mix - 0 = lean, 1 = standard, 2 = rich, 3 = max
 	FrontBrakeBias    uint8   // Front brake bias (percentage)
 	PitLimiterStatus  uint8   // Pit limiter status - 0 = off, 1 = on
-	FuelInTank        float64 // Current fuel mass
-	FuelCapacity      float64 // Fuel capacity
-	FuelRemainingLaps float64 // Fuel remaining in terms of laps (value on MFD)
+	FuelInTank        float32 // Current fuel mass
+	FuelCapacity      float32 // Fuel capacity
+	FuelRemainingLaps float32 // Fuel remaining in terms of laps (value on MFD)
 	MaxRPM            uint16  // Cars max RPM, point of rev limiter
 	IdleRPM           uint16  // Cars idle RPM
 	MaxGears          uint8   // Maximum number of gears
@@ -65,14 +65,14 @@ type CarStatusDataDetail struct {
 	// -1 = invalid/unknown, 0 = none, 1 = green
 	// 2 = blue, 3 = yellow, 4 = red
 	VehicleFiaFlags int8
-	ErsStoreEnergy  float64 // ERS energy store in Joules
+	ErsStoreEnergy  float32 // ERS energy store in Joules
 
 	// ERS deployment mode, 0 = none, 1 = medium
 	// 2 = overtake, 3 = hotlap
 	ErsDeployMode           uint8
-	ErsHarvestedThisLapMGUK float64 // ERS energy harvested this lap by MGU-K
-	ErsHarvestedThisLapMGUH float64 // ERS energy harvested this lap by MGU-H
-	ErsDeployedThisLap      float64 // ERS energy deployed this lap
+	ErsHarvestedThisLapMGUK float32 // ERS energy harvested this lap by MGU-K
+	ErsHarvestedThisLapMGUH float32 // ERS energy harvested this lap by MGU-H
+	ErsDeployedThisLap      float32 // ERS energy deployed this lap
 }
 
 // CarStatusData details car statuses for all the cars in the race.
@@ -83,10 +83,10 @@ type CarStatusData struct {
 	CarStatusData CarStatusDataDetail
 }
 
-func NewCarStatusData(header packet.PacketHeader, p *packet.PacketCarStatusData) *CarStatusData {
-	pk := p.CarStatusData[header.PlayerCarIndex]
+func NewCarStatusData(p *packet.PacketCarStatusData) *CarStatusData {
+	pk := p.CarStatusData[p.Header.PlayerCarIndex]
 	return &CarStatusData{
-		Header: NewHeader(header),
+		Header: NewHeader(p.Header),
 		CarStatusData: CarStatusDataDetail{
 			TractionControl:         pk.TractionControl,
 			AntiLockBrakes:          pk.AntiLockBrakes,

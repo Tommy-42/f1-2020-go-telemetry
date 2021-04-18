@@ -7,7 +7,7 @@ type EventDataDetails interface{}
 // FastestLap ...
 type FastestLap struct {
 	VehicleIdx uint8   // Vehicle index of car achieving fastest lap
-	LapTime    float64 // Lap time is in seconds
+	LapTime    float32 // Lap time is in seconds
 }
 
 // Retirement ...
@@ -39,7 +39,7 @@ type Penalty struct {
 // SpeedTrap ...
 type SpeedTrap struct {
 	VehicleIdx uint8   // Vehicle index of the vehicle triggering speed trap
-	Speed      float64 // Top speed achieved in kilometres per hour
+	Speed      float32 // Top speed achieved in kilometres per hour
 }
 
 // PacketEventData gives details of events that happen during the course of a session.
@@ -48,6 +48,7 @@ type SpeedTrap struct {
 // Size: 35 bytes (Packet size updated in Beta 3)
 // Version: 1
 type PacketEventData struct {
+	Header PacketHeader
 	/*
 		EventStringCodes
 
@@ -64,7 +65,7 @@ type PacketEventData struct {
 		Penalty Issued 			| “PENA” 	| A penalty has been issued – details in event
 		Speed Trap Triggered 	| “SPTP” 	| Speed trap has been triggered by fastest speed
 	*/
-	EventStringCode [4]uint8
+	EventStringCode string
 
 	// EventDetails - should be interpreted differently for each type
 	EventDetails EventDataDetails

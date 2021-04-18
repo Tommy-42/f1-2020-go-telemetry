@@ -17,11 +17,11 @@ type FinalClassificationData struct {
 	ClassificationData packet.FinalClassificationData
 }
 
-func NewFinalClassificationData(header packet.PacketHeader, p *packet.PacketFinalClassificationData) *FinalClassificationData {
+func NewFinalClassificationData(p *packet.PacketFinalClassificationData) *FinalClassificationData {
 	return &FinalClassificationData{
-		Header:             NewHeader(header),
+		Header:             NewHeader(p.Header),
 		NumCars:            p.NumCars,
-		ClassificationData: p.ClassificationData[header.PlayerCarIndex],
+		ClassificationData: p.ClassificationData[p.Header.PlayerCarIndex],
 	}
 }
 
