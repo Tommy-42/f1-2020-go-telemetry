@@ -2,7 +2,9 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"net"
+	"os"
 
 	"github.com/Tommy-42/f1-2020-go-telemetry/config"
 	"github.com/Tommy-42/f1-2020-go-telemetry/repository/elastic"
@@ -26,6 +28,10 @@ func (s *Service) Start(ctx context.Context) error {
 
 	config := config.Config{
 		Elastic: elastic.DefaultConfig(),
+	}
+
+	if es := os.Getenv("ELASTICSEARCH_HOST"); es != "" {
+		config.Elastic.Addresses = []string{fmt.Sprintf("http://%s", es)}
 	}
 
 	logrus.Info("starting New Repository")
