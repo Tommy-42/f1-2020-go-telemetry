@@ -3,6 +3,8 @@ package elastic
 import (
 	"bytes"
 	"context"
+	"fmt"
+	"net/http"
 	"time"
 
 	elasticsearch "github.com/elastic/go-elasticsearch/v8"
@@ -28,13 +30,24 @@ func NewES(conf Config) (*Elastic, error) {
 		return nil, errors.Wrap(err, "could not start elasticsearch client")
 	}
 
-	// res, err := client.Indices.Create(conf.Index)
-	// if err != nil {
-	// 	return nil, errors.Wrapf(err, "could not create elasticsearch index: %s", conf.Index)
-	// }
-	// if res.IsError() {
-	// 	return nil, errors.Wrapf(err, "could not create elasticsearch index: %s", conf.Index)
-	// }
+	res, err := client.Indices.Exists([]string{conf.Index})
+	if err != nil {
+		return nil, errors.Wrapf(err, "could not create elasticsearch index: %s", conf.Index)
+	}
+	if res.IsError() {
+		if res.StatusCode == http.StatusNotFound {
+			ret, err := client.Indices.Create(conf.Index)
+			if err != nil {
+				return nil, errors.Wrapf(err, "could not create elasticsearch index: %s", conf.Index)
+			}
+			if ret.IsError() {
+				return nil, errors.New(fmt.Sprintf("could not create elasticsearch index %s: %s", conf.Index, res.Status()))
+			}
+		}
+		if res.IsError() {
+			return nil, errors.New(fmt.Sprintf("could not request exists elasticsearch index %s: %s", conf.Index, res.Status()))
+		}
+	}
 
 	return &Elastic{
 		client: client,

@@ -3,20 +3,21 @@ package models
 import (
 	"bytes"
 	"encoding/json"
+	"strconv"
 
 	"github.com/Tommy-42/f1-2020-go-telemetry/models/packet"
 )
 
 type CarTelemetryDataDetails struct {
-	Speed            uint16  // Speed of car in kilometres per hour
-	Throttle         float32 // Amount of throttle applied (0.0 to 1.0)
-	Steer            float32 // Steering (-1.0 (full lock left) to 1.0 (full lock right))
-	Brake            float32 // Amount of brake applied (0.0 to 1.0)
-	Clutch           uint8   // Amount of clutch applied (0 to 100)
-	Gear             int8    // Gear selected (1-8, N=0, R=-1)
-	EngineRPM        uint16  // Engine RPM
-	Drs              uint8   // 0 = off, 1 = on
-	RevLightsPercent uint8   // Rev lights indicator (percentage)
+	Speed            uint16 // Speed of car in kilometres per hour
+	Throttle         string // Amount of throttle applied (0.0 to 1.0)
+	Steer            string // Steering (-1.0 (full lock left) to 1.0 (full lock right))
+	Brake            string // Amount of brake applied (0.0 to 1.0)
+	Clutch           uint8  // Amount of clutch applied (0 to 100)
+	Gear             int8   // Gear selected (1-8, N=0, R=-1)
+	EngineRPM        uint16 // Engine RPM
+	Drs              uint8  // 0 = off, 1 = on
+	RevLightsPercent uint8  // Rev lights indicator (percentage)
 
 	RearLeftBrakesTemperature   uint16 // Brakes temperature (celsius)
 	RearRightBrakesTemperature  uint16 // Brakes temperature (celsius)
@@ -35,10 +36,10 @@ type CarTelemetryDataDetails struct {
 
 	EngineTemperature uint16 // Engine temperature (celsius)
 
-	RearLeftTyresPressure   float32 // Tyres pressure (PSI)
-	RearRightTyresPressure  float32 // Tyres pressure (PSI)
-	FrontLeftTyresPressure  float32 // Tyres pressure (PSI)
-	FrontRightTyresPressure float32 // Tyres pressure (PSI)
+	RearLeftTyresPressure   string // Tyres pressure (PSI)
+	RearRightTyresPressure  string // Tyres pressure (PSI)
+	FrontLeftTyresPressure  string // Tyres pressure (PSI)
+	FrontRightTyresPressure string // Tyres pressure (PSI)
 
 	RearLeftSurfaceType   uint8 // Driving surface, see appendices
 	RearRightSurfaceType  uint8 // Driving surface, see appendices
@@ -76,9 +77,9 @@ func NewCarTelemetryData(p *packet.PacketCarTelemetryData) *CarTelemetryData {
 		Header: NewHeader(p.Header),
 		CarTelemetryData: CarTelemetryDataDetails{
 			Speed:                             pk.Speed,
-			Throttle:                          pk.Throttle,
-			Steer:                             pk.Steer,
-			Brake:                             pk.Brake,
+			Throttle:                          strconv.FormatFloat(float64(pk.Throttle), 'f', 4, 64),
+			Steer:                             strconv.FormatFloat(float64(pk.Steer), 'f', 4, 64),
+			Brake:                             strconv.FormatFloat(float64(pk.Brake), 'f', 4, 64),
 			Clutch:                            pk.Clutch,
 			Gear:                              pk.Gear,
 			EngineRPM:                         pk.EngineRPM,
@@ -97,10 +98,10 @@ func NewCarTelemetryData(p *packet.PacketCarTelemetryData) *CarTelemetryData {
 			FrontLeftTyresInnerTemperature:    pk.TyresInnerTemperature[2],
 			FrontRightTyresInnerTemperature:   pk.TyresInnerTemperature[3],
 			EngineTemperature:                 pk.EngineTemperature,
-			RearLeftTyresPressure:             pk.TyresPressure[0],
-			RearRightTyresPressure:            pk.TyresPressure[1],
-			FrontLeftTyresPressure:            pk.TyresPressure[2],
-			FrontRightTyresPressure:           pk.TyresPressure[3],
+			RearLeftTyresPressure:             strconv.FormatFloat(float64(pk.TyresPressure[0]), 'f', 4, 64),
+			RearRightTyresPressure:            strconv.FormatFloat(float64(pk.TyresPressure[1]), 'f', 4, 64),
+			FrontLeftTyresPressure:            strconv.FormatFloat(float64(pk.TyresPressure[2]), 'f', 4, 64),
+			FrontRightTyresPressure:           strconv.FormatFloat(float64(pk.TyresPressure[3]), 'f', 4, 64),
 			RearLeftSurfaceType:               pk.SurfaceType[0],
 			RearRightSurfaceType:              pk.SurfaceType[1],
 			FrontLeftSurfaceType:              pk.SurfaceType[2],

@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"fmt"
 	"net"
 	"os"
 
@@ -31,7 +30,7 @@ func (s *Service) Start(ctx context.Context) error {
 	}
 
 	if es := os.Getenv("ELASTICSEARCH_HOST"); es != "" {
-		config.Elastic.Addresses = []string{fmt.Sprintf("http://%s", es)}
+		config.Elastic.Addresses = []string{es}
 	}
 
 	logrus.Info("starting New Repository")
@@ -69,6 +68,7 @@ func (s *Service) Start(ctx context.Context) error {
 		if err != nil {
 			logrus.WithError(err).Errorf("error reading from udp, received %d from %s:%d", n, addr.IP.String(), addr.Port)
 		}
+		// logrus.Debugf("reading from udp, received %d from %s:%d", n, addr.IP.String(), addr.Port)
 		handlerPacket.HandlerChan() <- buffer
 	}
 }

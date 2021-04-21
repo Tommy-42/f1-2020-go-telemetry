@@ -83,8 +83,8 @@ github.com/kr/pretty v0.1.0/go.mod h1:dAy3ld7l9f0ibDNOQOHHMYYIIbhfbHSm3C4ZsoJORN
 github.com/kr/pretty v0.2.0/go.mod h1:ipq/a2n7PKx3OHsz4KJII5eveXtPO4qwEXGdVfWzfnI=
 github.com/kr/pty v1.1.1/go.mod h1:pFQYn66WHrOpPYNljwOMqo10TkYh1fy3cYio2l3bCsQ=
 github.com/kr/text v0.1.0/go.mod h1:4Jbv+DJW3UT/LiOwJeYQe1efqtUx/iVham/4vfdArNI=
-github.com/mailgun/holster/v3 v3.15.2 h1:QYyqKsdYthYKyF+hp+Ks0965CgtmxW8eLOrGSgXW/fI=
-github.com/mailgun/holster/v3 v3.15.2/go.mod h1:ZGvGvMpJiADhju+cfNsf/EF0JIy0dsAGdO5al1uZkJ4=
+github.com/mailgun/holster/v3 v3.16.0 h1:6ffL/hZPFIkDNEbMJnBsPshrT8Blyalpxdbcv+VnSAE=
+github.com/mailgun/holster/v3 v3.16.0/go.mod h1:U3cbmr+/KfYqWINVCqyEhEID8hBDOPHEj+XmDKbi2nk=
 github.com/mattn/go-colorable v0.0.9/go.mod h1:9vuHe8Xs5qXnSaW/c/ABM9alt+Vo+STaOChaDxuIBZU=
 github.com/mattn/go-colorable v0.1.4/go.mod h1:U0ppj6V5qS13XJ6of8GYAs25YV2eR4EVcfRqFIhoBtE=
 github.com/mattn/go-colorable v0.1.6/go.mod h1:u6P/XSegPjTcexA+o6vUJrdnUu04hMope9wVRipJSqc=

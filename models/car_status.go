@@ -3,24 +3,25 @@ package models
 import (
 	"bytes"
 	"encoding/json"
+	"strconv"
 
 	"github.com/Tommy-42/f1-2020-go-telemetry/models/packet"
 )
 
 // CarStatusData ...
 type CarStatusDataDetail struct {
-	TractionControl   uint8   // 0 (off) - 2 (high)
-	AntiLockBrakes    uint8   // 0 (off) - 1 (on)
-	FuelMix           uint8   // Fuel mix - 0 = lean, 1 = standard, 2 = rich, 3 = max
-	FrontBrakeBias    uint8   // Front brake bias (percentage)
-	PitLimiterStatus  uint8   // Pit limiter status - 0 = off, 1 = on
-	FuelInTank        float32 // Current fuel mass
-	FuelCapacity      float32 // Fuel capacity
-	FuelRemainingLaps float32 // Fuel remaining in terms of laps (value on MFD)
-	MaxRPM            uint16  // Cars max RPM, point of rev limiter
-	IdleRPM           uint16  // Cars idle RPM
-	MaxGears          uint8   // Maximum number of gears
-	DrsAllowed        uint8   // 0 = not allowed, 1 = allowed, -1 = unknown
+	TractionControl   uint8  // 0 (off) - 2 (high)
+	AntiLockBrakes    uint8  // 0 (off) - 1 (on)
+	FuelMix           uint8  // Fuel mix - 0 = lean, 1 = standard, 2 = rich, 3 = max
+	FrontBrakeBias    uint8  // Front brake bias (percentage)
+	PitLimiterStatus  uint8  // Pit limiter status - 0 = off, 1 = on
+	FuelInTank        string // Current fuel mass
+	FuelCapacity      string // Fuel capacity
+	FuelRemainingLaps string // Fuel remaining in terms of laps (value on MFD)
+	MaxRPM            uint16 // Cars max RPM, point of rev limiter
+	IdleRPM           uint16 // Cars idle RPM
+	MaxGears          uint8  // Maximum number of gears
+	DrsAllowed        uint8  // 0 = not allowed, 1 = allowed, -1 = unknown
 
 	// Added in Beta3:
 	// 0 = DRS not available, non-zero - DRS will be available
@@ -65,14 +66,14 @@ type CarStatusDataDetail struct {
 	// -1 = invalid/unknown, 0 = none, 1 = green
 	// 2 = blue, 3 = yellow, 4 = red
 	VehicleFiaFlags int8
-	ErsStoreEnergy  float32 // ERS energy store in Joules
+	ErsStoreEnergy  string // ERS energy store in Joules
 
 	// ERS deployment mode, 0 = none, 1 = medium
 	// 2 = overtake, 3 = hotlap
 	ErsDeployMode           uint8
-	ErsHarvestedThisLapMGUK float32 // ERS energy harvested this lap by MGU-K
-	ErsHarvestedThisLapMGUH float32 // ERS energy harvested this lap by MGU-H
-	ErsDeployedThisLap      float32 // ERS energy deployed this lap
+	ErsHarvestedThisLapMGUK string // ERS energy harvested this lap by MGU-K
+	ErsHarvestedThisLapMGUH string // ERS energy harvested this lap by MGU-H
+	ErsDeployedThisLap      string // ERS energy deployed this lap
 }
 
 // CarStatusData details car statuses for all the cars in the race.
@@ -93,9 +94,9 @@ func NewCarStatusData(p *packet.PacketCarStatusData) *CarStatusData {
 			FuelMix:                 pk.FuelMix,
 			FrontBrakeBias:          pk.FrontBrakeBias,
 			PitLimiterStatus:        pk.PitLimiterStatus,
-			FuelInTank:              pk.FuelInTank,
-			FuelCapacity:            pk.FuelCapacity,
-			FuelRemainingLaps:       pk.FuelRemainingLaps,
+			FuelInTank:              strconv.FormatFloat(float64(pk.FuelInTank), 'f', 4, 64),
+			FuelCapacity:            strconv.FormatFloat(float64(pk.FuelCapacity), 'f', 4, 64),
+			FuelRemainingLaps:       strconv.FormatFloat(float64(pk.FuelRemainingLaps), 'f', 4, 64),
 			MaxRPM:                  pk.MaxRPM,
 			IdleRPM:                 pk.IdleRPM,
 			MaxGears:                pk.MaxGears,
@@ -119,11 +120,11 @@ func NewCarStatusData(p *packet.PacketCarStatusData) *CarStatusData {
 			EngineDamage:            pk.EngineDamage,
 			GearBoxDamage:           pk.GearBoxDamage,
 			VehicleFiaFlags:         pk.VehicleFiaFlags,
-			ErsStoreEnergy:          pk.ErsStoreEnergy,
+			ErsStoreEnergy:          strconv.FormatFloat(float64(pk.ErsStoreEnergy), 'f', 4, 64),
 			ErsDeployMode:           pk.ErsDeployMode,
-			ErsHarvestedThisLapMGUK: pk.ErsHarvestedThisLapMGUK,
-			ErsHarvestedThisLapMGUH: pk.ErsHarvestedThisLapMGUH,
-			ErsDeployedThisLap:      pk.ErsDeployedThisLap,
+			ErsHarvestedThisLapMGUK: strconv.FormatFloat(float64(pk.ErsHarvestedThisLapMGUK), 'f', 4, 64),
+			ErsHarvestedThisLapMGUH: strconv.FormatFloat(float64(pk.ErsHarvestedThisLapMGUH), 'f', 4, 64),
+			ErsDeployedThisLap:      strconv.FormatFloat(float64(pk.ErsDeployedThisLap), 'f', 4, 64),
 		},
 	}
 }

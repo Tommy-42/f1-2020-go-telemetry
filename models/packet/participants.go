@@ -2,13 +2,13 @@ package packet
 
 // ParticipantData ...
 type ParticipantData struct {
-	AiControlled  uint8  // Whether the vehicle is AI (1) or Human (0) controlled
-	DriverID      uint8  // Driver id - see appendix
-	TeamID        uint8  // Team id - see appendix
-	RaceNumber    uint8  // Race number of the car
-	Nationality   uint8  // Nationality of the driver
-	Name          string // Name of participant in UTF-8 format – null terminated. Will be truncated with … (U+2026) if too long
-	YourTelemetry uint8  // The player's UDP setting, 0 = restricted, 1 = public
+	AiControlled  uint8    // Whether the vehicle is AI (1) or Human (0) controlled
+	DriverID      uint8    // Driver id - see appendix
+	TeamID        uint8    // Team id - see appendix
+	RaceNumber    uint8    // Race number of the car
+	Nationality   uint8    // Nationality of the driver
+	Name          [48]byte // Name of participant in UTF-8 format – null terminated. Will be truncated with … (U+2026) if too long
+	YourTelemetry uint8    // The player's UDP setting, 0 = restricted, 1 = public
 }
 
 // PacketParticipantsData is a list of participants in the race.

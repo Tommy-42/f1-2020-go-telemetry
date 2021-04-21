@@ -50,7 +50,6 @@ func NewHandlerPacket(repo repository.Repository) *HandlerPacket {
 					}
 					logrus.WithError(err).Errorf("found error while decoding packet")
 					return err
-
 				}
 
 				// handle packet
@@ -74,25 +73,27 @@ func (h *HandlerPacket) HandlerChan() chan []byte {
 // decodePacket ...
 func (h *HandlerPacket) decodePacket(ctx context.Context, packet []byte) (models.F1Data, error) {
 
-	headerReader := bytes.NewReader(packet)
+	reader := bytes.NewReader(packet)
+
 	header := f1packet.PacketHeader{}
-	err := binary.Read(headerReader, binary.LittleEndian, &header)
+	err := binary.Read(reader, binary.LittleEndian, &header)
 	if err != nil {
 		return nil, errors.Wrap(err, "could not decode header")
 	}
 
-	if header.PacketFormat != F1Version || header.PlayerCarIndex > 21 {
+	if header.PacketFormat != F1Version {
 		return nil, ErrIgnorePacket
 	}
+
+	reader.Reset(packet)
 
 	switch f1packet.PacketType(header.PacketID) {
 	case f1packet.MotionPacket:
 
 		placeholder := &f1packet.PacketMotionData{}
-		reader := bytes.NewReader(packet)
 		err = binary.Read(reader, binary.LittleEndian, placeholder)
 		if err != nil {
-			logrus.Errorf("Packet ID: %d", header.PacketID)
+			logrus.Errorf("Packet Header: %+v", header)
 			return nil, errors.Wrap(err, "could not decode binary data PacketMotionData")
 		}
 
@@ -105,10 +106,9 @@ func (h *HandlerPacket) decodePacket(ctx context.Context, packet []byte) (models
 	case f1packet.SessionPacket:
 
 		placeholder := &f1packet.PacketSessionData{}
-		reader := bytes.NewReader(packet)
 		err = binary.Read(reader, binary.LittleEndian, placeholder)
 		if err != nil {
-			logrus.Errorf("Packet ID: %d", header.PacketID)
+			logrus.Errorf("Packet Header: %+v", header)
 			return nil, errors.Wrap(err, "could not decode binary data PacketSessionData")
 		}
 
@@ -121,10 +121,9 @@ func (h *HandlerPacket) decodePacket(ctx context.Context, packet []byte) (models
 	case f1packet.LapDataPacket:
 
 		placeholder := &f1packet.PacketLapData{}
-		reader := bytes.NewReader(packet)
 		err = binary.Read(reader, binary.LittleEndian, placeholder)
 		if err != nil {
-			logrus.Errorf("Packet ID: %d", header.PacketID)
+			logrus.Errorf("Packet Header: %+v", header)
 			return nil, errors.Wrap(err, "could not decode binary data PacketLapData")
 		}
 
@@ -137,10 +136,9 @@ func (h *HandlerPacket) decodePacket(ctx context.Context, packet []byte) (models
 	case f1packet.EventPacket:
 
 		placeholder := &f1packet.PacketEventData{}
-		reader := bytes.NewReader(packet)
 		err = binary.Read(reader, binary.LittleEndian, placeholder)
 		if err != nil {
-			logrus.Errorf("Packet ID: %d", header.PacketID)
+			logrus.Errorf("Packet Header: %+v", header)
 			return nil, errors.Wrap(err, "could not decode binary data PacketEventData")
 		}
 
@@ -153,10 +151,9 @@ func (h *HandlerPacket) decodePacket(ctx context.Context, packet []byte) (models
 	case f1packet.ParticipantsPacket:
 
 		placeholder := &f1packet.PacketParticipantsData{}
-		reader := bytes.NewReader(packet)
 		err = binary.Read(reader, binary.LittleEndian, placeholder)
 		if err != nil {
-			logrus.Errorf("Packet ID: %d", header.PacketID)
+			logrus.Errorf("Packet Header: %+v", header)
 			return nil, errors.Wrap(err, "could not decode binary data PacketParticipantsData")
 		}
 
@@ -169,10 +166,9 @@ func (h *HandlerPacket) decodePacket(ctx context.Context, packet []byte) (models
 	case f1packet.CarSetupsPacket:
 
 		placeholder := &f1packet.PacketCarSetupData{}
-		reader := bytes.NewReader(packet)
 		err = binary.Read(reader, binary.LittleEndian, placeholder)
 		if err != nil {
-			logrus.Errorf("Packet ID: %d", header.PacketID)
+			logrus.Errorf("Packet Header: %+v", header)
 			return nil, errors.Wrap(err, "could not decode binary data PacketCarSetupData")
 		}
 
@@ -182,13 +178,28 @@ func (h *HandlerPacket) decodePacket(ctx context.Context, packet []byte) (models
 		}
 		return data, nil
 
+	case f1packet.CarStatusPacket:
+
+		placeholder := &f1packet.PacketCarStatusData{}
+		err = binary.Read(reader, binary.LittleEndian, placeholder)
+		if err != nil {
+			logrus.Errorf("Packet Header: %+v", header)
+			return nil, errors.Wrap(err, "could not decode binary data PacketCarStatusData")
+		}
+
+		data := models.NewCarStatusData(placeholder)
+		if data == nil {
+			return nil, ErrIgnorePacket
+		}
+
+		return data, nil
+
 	case f1packet.CarTelemetryPacket:
 
 		placeholder := &f1packet.PacketCarTelemetryData{}
-		reader := bytes.NewReader(packet)
 		err = binary.Read(reader, binary.LittleEndian, placeholder)
 		if err != nil {
-			logrus.Errorf("Packet ID: %d", header.PacketID)
+			logrus.Errorf("Packet Header: %+v", header)
 			return nil, errors.Wrap(err, "could not decode binary data PacketCarTelemetryData")
 		}
 
@@ -198,29 +209,12 @@ func (h *HandlerPacket) decodePacket(ctx context.Context, packet []byte) (models
 		}
 		return data, nil
 
-	case f1packet.CarStatusPacket:
-
-		placeholder := &f1packet.PacketCarStatusData{}
-		reader := bytes.NewReader(packet)
-		err = binary.Read(reader, binary.LittleEndian, placeholder)
-		if err != nil {
-			logrus.Errorf("Packet ID: %d", header.PacketID)
-			return nil, errors.Wrap(err, "could not decode binary data PacketCarStatusData")
-		}
-
-		data := models.NewCarStatusData(placeholder)
-		if data == nil {
-			return nil, ErrIgnorePacket
-		}
-		return data, nil
-
 	case f1packet.FinalClassificationPacket:
 
 		placeholder := &f1packet.PacketFinalClassificationData{}
-		reader := bytes.NewReader(packet)
 		err = binary.Read(reader, binary.LittleEndian, placeholder)
 		if err != nil {
-			logrus.Errorf("Packet ID: %d", header.PacketID)
+			logrus.Errorf("Packet Header: %+v", header)
 			return nil, errors.Wrap(err, "could not decode binary data PacketFinalClassificationData")
 		}
 
@@ -233,10 +227,9 @@ func (h *HandlerPacket) decodePacket(ctx context.Context, packet []byte) (models
 	case f1packet.LobbyInfoPacket:
 
 		placeholder := &f1packet.PacketLobbyInfoData{}
-		reader := bytes.NewReader(packet)
 		err = binary.Read(reader, binary.LittleEndian, placeholder)
 		if err != nil {
-			logrus.Errorf("Packet ID: %d", header.PacketID)
+			logrus.Errorf("Packet Header: %+v", header)
 			return nil, errors.Wrap(err, "could not decode binary data PacketLobbyInfoData")
 		}
 

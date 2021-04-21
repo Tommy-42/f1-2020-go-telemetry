@@ -35,11 +35,11 @@ type PacketHeader struct {
 	// Car Status				| 	7 	| Status data for all cars such as damage
 	// Final Classification		| 	8 	| Final classification confirmation at the end of a race
 	// Lobby Info				| 	9 	| Information about players in a multiplayer lobby
-	PacketID        uint8  // Identifier for the packet type
-	SessionUID      uint64 // Unique identifier for the session
-	SessionTime     int64  // Session timestamp
-	FrameIdentifier uint32 // Identifier for the frame the data was retrieved on
-	PlayerCarIndex  uint8  // Index of player's car in the array
+	PacketID        uint8   // Identifier for the packet type
+	SessionUID      uint64  // Unique identifier for the session
+	SessionTime     float32 // Session timestamp
+	FrameIdentifier uint32  // Identifier for the frame the data was retrieved on
+	PlayerCarIndex  uint8   // Index of player's car in the array
 
 	// ADDED IN BETA 2:
 	SecondaryPlayerCarIndex uint8 // Index of secondary player's car in the array (splitscreen)

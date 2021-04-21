@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-        - "ELASTICSEARCH_HOST=es01"
+        - "ELASTICSEARCH_HOST=http://es01:9200"
     ports:
       - 20777:20777/udp
     networks:
