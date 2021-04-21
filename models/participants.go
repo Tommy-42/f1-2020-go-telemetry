@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"time"
 
 	"github.com/Tommy-42/f1-2020-go-telemetry/models/packet"
 )
@@ -31,7 +32,9 @@ type ParticipantData struct {
 // Size: 1213 bytes (Packet size updated in Beta 3)
 // Version: 1
 type ParticipantsData struct {
-	Header Header
+	Header    Header
+	Timestamp time.Time
+
 	// Number of active cars in the data – should match number of cars on HUD
 	NumActiveCars uint8
 	Participants  ParticipantData
@@ -40,7 +43,9 @@ type ParticipantsData struct {
 func NewParticipantsData(p *packet.PacketParticipantsData) *ParticipantsData {
 	pk := p.Participants[p.Header.PlayerCarIndex]
 	return &ParticipantsData{
-		Header:        NewHeader(p.Header),
+		Header:    NewHeader(p.Header),
+		Timestamp: time.Now().UTC(),
+
 		NumActiveCars: p.NumActiveCars,
 		Participants: ParticipantData{
 			AiControlled:  pk.AiControlled,

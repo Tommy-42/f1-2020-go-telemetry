@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"strconv"
+	"time"
 
 	"github.com/Tommy-42/f1-2020-go-telemetry/models/packet"
 )
@@ -15,7 +16,8 @@ import (
 // to convert to float values divide by 32767.0f – 16-bit signed values are used to pack the data and
 // on the assumption that direction values are always between -1.0f and 1.0f.
 type MotionData struct {
-	Header Header
+	Header    Header
+	Timestamp time.Time
 
 	CarMotionData packet.CarMotionData // Data for all cars on track
 
@@ -54,7 +56,9 @@ type MotionData struct {
 
 func NewMotionData(p *packet.PacketMotionData) *MotionData {
 	return &MotionData{
-		Header:                           NewHeader(p.Header),
+		Header:    NewHeader(p.Header),
+		Timestamp: time.Now().UTC(),
+
 		CarMotionData:                    p.CarMotionData[p.Header.PlayerCarIndex],
 		RearLeftSuspensionPosition:       strconv.FormatFloat(float64(p.SuspensionPosition[0]), 'f', 4, 64),
 		RearRightSuspensionPosition:      strconv.FormatFloat(float64(p.SuspensionPosition[1]), 'f', 4, 64),

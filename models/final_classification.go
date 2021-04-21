@@ -3,6 +3,7 @@ package models
 import (
 	"bytes"
 	"encoding/json"
+	"time"
 
 	"github.com/Tommy-42/f1-2020-go-telemetry/models/packet"
 )
@@ -11,7 +12,8 @@ import (
 // and the data will match with the post race results screen.
 // This is especially useful for multiplayer games where it is not always possible to send lap times on the final frame because of network delay.
 type FinalClassificationData struct {
-	Header Header
+	Header    Header
+	Timestamp time.Time
 
 	NumCars            uint8 // Number of cars in the final classification
 	ClassificationData packet.FinalClassificationData
@@ -19,7 +21,9 @@ type FinalClassificationData struct {
 
 func NewFinalClassificationData(p *packet.PacketFinalClassificationData) *FinalClassificationData {
 	return &FinalClassificationData{
-		Header:             NewHeader(p.Header),
+		Header:    NewHeader(p.Header),
+		Timestamp: time.Now().UTC(),
+
 		NumCars:            p.NumCars,
 		ClassificationData: p.ClassificationData[p.Header.PlayerCarIndex],
 	}

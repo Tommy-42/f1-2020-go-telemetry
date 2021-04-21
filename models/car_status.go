@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"strconv"
+	"time"
 
 	"github.com/Tommy-42/f1-2020-go-telemetry/models/packet"
 )
@@ -79,7 +80,8 @@ type CarStatusDataDetail struct {
 // CarStatusData details car statuses for all the cars in the race.
 // It includes values such as the damage readings on the car.
 type CarStatusData struct {
-	Header Header
+	Header    Header
+	Timestamp time.Time
 
 	CarStatusData CarStatusDataDetail
 }
@@ -87,7 +89,8 @@ type CarStatusData struct {
 func NewCarStatusData(p *packet.PacketCarStatusData) *CarStatusData {
 	pk := p.CarStatusData[p.Header.PlayerCarIndex]
 	return &CarStatusData{
-		Header: NewHeader(p.Header),
+		Header:    NewHeader(p.Header),
+		Timestamp: time.Now().UTC(),
 		CarStatusData: CarStatusDataDetail{
 			TractionControl:         pk.TractionControl,
 			AntiLockBrakes:          pk.AntiLockBrakes,

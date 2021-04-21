@@ -3,13 +3,15 @@ package models
 import (
 	"bytes"
 	"encoding/json"
+	"time"
 
 	"github.com/Tommy-42/f1-2020-go-telemetry/models/packet"
 )
 
 // PacketEventData gives details of events that happen during the course of a session.
 type EventData struct {
-	Header Header
+	Header    Header
+	Timestamp time.Time
 
 	/*
 		EventStringCodes
@@ -35,7 +37,9 @@ type EventData struct {
 
 func NewEventData(p *packet.PacketEventData) *EventData {
 	return &EventData{
-		Header:          NewHeader(p.Header),
+		Header:    NewHeader(p.Header),
+		Timestamp: time.Now().UTC(),
+
 		EventStringCode: p.EventStringCode,
 		EventDetails:    p.EventDetails,
 	}

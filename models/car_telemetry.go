@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"strconv"
+	"time"
 
 	"github.com/Tommy-42/f1-2020-go-telemetry/models/packet"
 )
@@ -50,7 +51,8 @@ type CarTelemetryDataDetails struct {
 // CarTelemetryData details telemetry for all the cars in the race.
 // It details various values that would be recorded on the car such as speed, throttle application, DRS etc.
 type CarTelemetryData struct {
-	Header Header
+	Header    Header
+	Timestamp time.Time
 
 	CarTelemetryData CarTelemetryDataDetails
 
@@ -74,7 +76,8 @@ type CarTelemetryData struct {
 func NewCarTelemetryData(p *packet.PacketCarTelemetryData) *CarTelemetryData {
 	pk := p.CarTelemetryData[p.Header.PlayerCarIndex]
 	return &CarTelemetryData{
-		Header: NewHeader(p.Header),
+		Header:    NewHeader(p.Header),
+		Timestamp: time.Now().UTC(),
 		CarTelemetryData: CarTelemetryDataDetails{
 			Speed:                             pk.Speed,
 			Throttle:                          strconv.FormatFloat(float64(pk.Throttle), 'f', 4, 64),

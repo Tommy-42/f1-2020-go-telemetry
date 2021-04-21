@@ -3,13 +3,15 @@ package models
 import (
 	"bytes"
 	"encoding/json"
+	"time"
 
 	"github.com/Tommy-42/f1-2020-go-telemetry/models/packet"
 )
 
 // SessionData includes details about the current session in progress.
 type SessionData struct {
-	Header Header
+	Header    Header
+	Timestamp time.Time
 
 	// Weather - 0 = clear, 1 = light cloud, 2 = overcast
 	// 3 = light rain, 4 = heavy rain, 5 = storm
@@ -51,7 +53,9 @@ type SessionData struct {
 
 func NewSessionData(p *packet.PacketSessionData) *SessionData {
 	return &SessionData{
-		Header:                    NewHeader(p.Header),
+		Header:    NewHeader(p.Header),
+		Timestamp: time.Now().UTC(),
+
 		Weather:                   p.Weather,
 		TrackTemperature:          p.TrackTemperature,
 		AirTemperature:            p.AirTemperature,

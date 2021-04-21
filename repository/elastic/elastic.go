@@ -30,9 +30,14 @@ func NewES(conf Config) (*Elastic, error) {
 		return nil, errors.Wrap(err, "could not start elasticsearch client")
 	}
 
+	es := &Elastic{
+		client: client,
+		index:  conf.Index,
+	}
+
 	res, err := client.Indices.Exists([]string{conf.Index})
 	if err != nil {
-		return nil, errors.Wrapf(err, "could not create elasticsearch index: %s", conf.Index)
+		return nil, errors.Wrapf(err, "could not check elasticsearch index: %s", conf.Index)
 	}
 	if res.IsError() {
 		if res.StatusCode == http.StatusNotFound {
@@ -41,18 +46,14 @@ func NewES(conf Config) (*Elastic, error) {
 				return nil, errors.Wrapf(err, "could not create elasticsearch index: %s", conf.Index)
 			}
 			if ret.IsError() {
-				return nil, errors.New(fmt.Sprintf("could not create elasticsearch index %s: %s", conf.Index, res.Status()))
+				return nil, errors.New(fmt.Sprintf("could not create elasticsearch index %s: [%d]%s", conf.Index, ret.StatusCode, ret.Status()))
 			}
+			return es, nil
 		}
-		if res.IsError() {
-			return nil, errors.New(fmt.Sprintf("could not request exists elasticsearch index %s: %s", conf.Index, res.Status()))
-		}
+		return nil, errors.New(fmt.Sprintf("could not request exists elasticsearch index %s: [%d]%s", conf.Index, res.StatusCode, res.Status()))
 	}
 
-	return &Elastic{
-		client: client,
-		index:  conf.Index,
-	}, nil
+	return es, nil
 }
 
 func (e *Elastic) Store(ctx context.Context, body *bytes.Reader) error {
