@@ -135,6 +135,9 @@ func (h *HandlerPacket) decodePacket(ctx context.Context, packet []byte) (models
 
 	case f1packet.EventPacket:
 
+		// Ignore them for now
+		return nil, ErrIgnorePacket
+
 		placeholder := &f1packet.PacketEventData{}
 		err = binary.Read(reader, binary.LittleEndian, placeholder)
 		if err != nil {
